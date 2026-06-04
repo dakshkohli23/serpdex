@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SerpDex — 50+ Free SEO Tools. No Signup. No Limits.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+
+/* ─────────────────────────────
+   TOKENS
+───────────────────────────── */
+:root{
+  /* surfaces */
+  --page:      #FAFBFF;
+  --white:     #FFFFFF;
+  --card:      #FFFFFF;
+  --chip:      #F3F5FD;
+
+  /* borders */
+  --line:      #E8EAF6;
+  --line-m:    #D0D4EE;
+
+  /* ink */
+  --ink:       #0D0F1C;
+  --ink-2:     #454868;
+  --ink-3:     #9496B0;
+
+  /* brand */
+  --indigo:    #4F46E5;
+  --indigo-h:  #4338CA;
+  --indigo-10: rgba(79,70,229,.10);
+  --indigo-18: rgba(79,70,229,.18);
+
+  /* accents */
+  --emerald:   #10B981;
+  --amber:     #F59E0B;
+  --rose:      #F43F5E;
+  --violet:    #8B5CF6;
+  --sky:       #0EA5E9;
+  --orange:    #F97316;
+
+  /* type */
+  --sans: 'Plus Jakarta Sans', sans-serif;
+  --mono: 'Inter', sans-serif;
+
+  /* misc */
+  --sh-xs: 0 1px 4px rgba(13,15,28,.06);
+  --sh-sm: 0 2px 12px rgba(13,15,28,.07);
+  --sh-md: 0 8px 32px rgba(13,15,28,.09);
+  --sh-lg: 0 20px 56px rgba(13,15,28,.12);
+  --r:  14px;
+  --r2: 20px;
+  --r3: 28px;
+}
+
+/* ─────────────────────────────
+   RESET
+───────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--sans);
+  background:var(--page);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+::selection{background:var(--indigo-18);color:var(--indigo);}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--page);}
+::-webkit-scrollbar-thumb{background:var(--line-m);border-radius:99px;}
+
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px;}
+
+/* ─────────────────────────────
+   BUTTONS
+───────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--sans);font-size:14px;font-weight:700;
+  padding:11px 22px;border-radius:10px;
+  border:none;cursor:pointer;
+  transition:all .22s ease;letter-spacing:.01em;white-space:nowrap;
+}
+.btn-indigo{background:var(--indigo);color:#fff;box-shadow:0 4px 16px rgba(79,70,229,.28);}
+.btn-indigo:hover{background:var(--indigo-h);transform:translateY(-2px);box-shadow:0 8px 26px rgba(79,70,229,.38);}
+.btn-white{background:var(--white);color:var(--ink);border:1.5px solid var(--line-m);box-shadow:var(--sh-xs);}
+.btn-white:hover{border-color:var(--indigo);color:var(--indigo);transform:translateY(-2px);box-shadow:var(--sh-sm);}
+
+/* ─────────────────────────────
+   NAVBAR
+───────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:18px 0;transition:all .35s;
+}
+.nav.stuck{
+  background:rgba(250,251,255,.94);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);
+  padding:12px 0;box-shadow:var(--sh-xs);
+}
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.logo{
+  display:flex;align-items:center;gap:9px;
+  font-family:var(--sans);font-size:19px;font-weight:800;
+  letter-spacing:-.03em;color:var(--ink);flex-shrink:0;
+}
+.logo-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:transparent;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;box-shadow:none;overflow:hidden;
+}
+.logo .dot{color:var(--indigo);}
+.nav-links{display:flex;align-items:center;gap:24px;}
+.nav-links a{font-size:14px;font-weight:600;color:var(--ink-2);transition:color .2s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.ham span{width:22px;height:2px;background:var(--ink-2);border-radius:2px;}
+
+/* ─────────────────────────────
+   HERO
+───────────────────────────── */
+.hero{
+  padding:118px 0 80px;
+  position:relative;overflow:hidden;
+}
+
+/* subtle gradient backdrop */
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 65% 10%, rgba(79,70,229,.06) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 45% at 10% 85%, rgba(16,185,129,.05) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 35% at 90% 80%, rgba(139,92,246,.04) 0%,transparent 55%);
+}
+/* grid dot pattern */
+.hero-dots{
+  position:absolute;inset:0;z-index:0;
+  background-image:radial-gradient(circle,rgba(79,70,229,.09) 1px,transparent 1px);
+  background-size:30px 30px;
+  mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,black 20%,transparent 80%);
+}
+
+.hero-inner{position:relative;z-index:2;}
+
+/* SPLIT */
+.hero-split{
+  display:grid;
+  grid-template-columns:1fr 480px;
+  gap:64px;align-items:center;
+}
+
+/* ── Left ── */
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--white);
+  border:1.5px solid var(--line);
+  border-radius:100px;padding:5px 14px 5px 5px;
+  margin-bottom:24px;box-shadow:var(--sh-xs);
+}
+.badge-chip{
+  background:var(--indigo);color:#fff;
+  font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 11px;border-radius:100px;
+}
+.hero-badge p{font-size:13px;font-weight:600;color:var(--ink-2);}
+
+.hero-h1{
+  font-family:var(--sans);
+  font-size:clamp(36px,4.2vw,58px);
+  font-weight:800;line-height:1.08;
+  letter-spacing:-.035em;color:var(--ink);
+  margin-bottom:20px;
+}
+.hero-h1 .line-grad{
+  background:linear-gradient(100deg,var(--indigo) 0%,var(--violet) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-h1 .line-em{
+  position:relative;display:inline-block;
+}
+.hero-h1 .line-em::after{
+  content:'';position:absolute;
+  bottom:-3px;left:0;right:0;height:4px;
+  background:var(--emerald);border-radius:4px;
+}
+
+.hero-p{
+  font-size:17px;font-weight:400;color:var(--ink-2);
+  line-height:1.72;max-width:480px;margin-bottom:36px;
+}
+.hero-p strong{color:var(--ink);font-weight:700;}
+
+/* search */
+.hero-search{
+  display:flex;align-items:center;
+  background:var(--white);
+  border:2px solid var(--line-m);
+  border-radius:12px;
+  padding:6px 6px 6px 18px;
+  max-width:460px;
+  box-shadow:var(--sh-sm);
+  margin-bottom:20px;
+  gap:10px;
+  transition:border-color .25s,box-shadow .25s;
+}
+.hero-search:focus-within{border-color:var(--indigo);box-shadow:0 0 0 4px var(--indigo-10);}
+.hero-search i{color:var(--ink-3);font-size:15px;flex-shrink:0;}
+.hero-search input{
+  flex:1;border:none;outline:none;
+  font-family:var(--sans);font-size:14.5px;font-weight:500;
+  color:var(--ink);background:transparent;
+}
+.hero-search input::placeholder{color:var(--ink-3);}
+.hero-search button{
+  background:var(--indigo);color:#fff;
+  font-family:var(--sans);font-size:13.5px;font-weight:700;
+  padding:10px 20px;border-radius:8px;border:none;cursor:pointer;
+  transition:all .22s;flex-shrink:0;
+}
+.hero-search button:hover{background:var(--indigo-h);}
+
+/* pills */
+.hero-pills{
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+  margin-bottom:40px;
+}
+.hp-lbl{font-size:12.5px;font-weight:600;color:var(--ink-3);margin-right:2px;}
+.hpill{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--white);border:1.5px solid var(--line);
+  border-radius:100px;padding:5px 13px;
+  font-size:12.5px;font-weight:600;color:var(--ink-2);
+  cursor:pointer;transition:all .2s;box-shadow:var(--sh-xs);
+}
+.hpill i{font-size:11px;}
+.hpill:hover{background:var(--indigo);border-color:var(--indigo);color:#fff;box-shadow:0 4px 14px rgba(79,70,229,.25);}
+
+/* stats */
+.hero-stats{
+  display:flex;align-items:stretch;width:fit-content;
+  border:1.5px solid var(--line);border-radius:var(--r);
+  background:var(--white);overflow:hidden;box-shadow:var(--sh-sm);
+}
+.hstat{
+  padding:16px 28px;display:flex;flex-direction:column;gap:3px;
+  border-right:1px solid var(--line);
+}
+.hstat:last-child{border-right:none;}
+.hstat .v{font-size:24px;font-weight:800;color:var(--indigo);letter-spacing:-.04em;line-height:1;}
+.hstat .l{font-size:11.5px;font-weight:600;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;}
+
+/* ── Right — clean card visual ── */
+.hero-visual{
+  position:relative;
+}
+
+/* big card */
+.hv-main{
+  background:var(--white);
+  border:1.5px solid var(--line);
+  border-radius:var(--r3);
+  padding:28px;
+  box-shadow:var(--sh-lg);
+  position:relative;overflow:hidden;
+}
+.hv-main::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--indigo),var(--violet));
+}
+.hv-topbar{
+  display:flex;align-items:center;gap:10px;margin-bottom:22px;
+}
+.hv-dots{display:flex;gap:5px;}
+.hv-dot{width:9px;height:9px;border-radius:50%;}
+.hv-dot:nth-child(1){background:#FF5F57;}
+.hv-dot:nth-child(2){background:#FFBD2E;}
+.hv-dot:nth-child(3){background:#28CA41;}
+.hv-title{font-size:12.5px;font-weight:700;color:var(--ink-3);margin-left:4px;}
+.hv-live{
+  margin-left:auto;display:inline-flex;align-items:center;gap:5px;
+  background:rgba(16,185,129,.1);color:var(--emerald);
+  font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px;
+}
+.hv-live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--emerald);animation:blink 1.5s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* Tool category chips inside visual */
+.hv-cats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  margin-bottom:20px;
+}
+.hv-cat{
+  background:var(--chip);border:1.5px solid var(--line);
+  border-radius:12px;padding:14px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  cursor:pointer;transition:all .2s;
+}
+.hv-cat:hover,.hv-cat.a{
+  background:var(--indigo);border-color:var(--indigo);
+}
+.hv-cat:hover .hv-cat-icon,.hv-cat.a .hv-cat-icon{background:rgba(255,255,255,.2);}
+.hv-cat:hover .hv-cat-icon i,.hv-cat.a .hv-cat-icon i{color:#fff;}
+.hv-cat:hover .hv-cat-lbl,.hv-cat.a .hv-cat-lbl{color:#fff;}
+.hv-cat-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  transition:background .2s;
+}
+.hv-cat-lbl{font-size:11px;font-weight:700;color:var(--ink-2);text-align:center;transition:color .2s;}
+
+/* Progress / result strip */
+.hv-results{display:flex;flex-direction:column;gap:8px;}
+.hv-row{
+  display:flex;align-items:center;gap:10px;
+  background:var(--chip);border-radius:10px;padding:10px 14px;
+}
+.hv-row-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.hv-row-kw{font-size:13px;font-weight:600;color:var(--ink);flex:1;}
+.hv-row-vol{font-size:12px;font-weight:700;color:var(--ink-2);}
+.hv-pill{font-size:10.5px;font-weight:800;padding:2px 9px;border-radius:100px;}
+.hv-easy{background:rgba(16,185,129,.1);color:var(--emerald);}
+.hv-med {background:rgba(245,158,11,.12);color:var(--amber);}
+.hv-hard{background:rgba(244,63,94,.1);color:var(--rose);}
+
+/* small floating card */
+.hv-float{
+  position:absolute;
+  background:var(--white);
+  border:1.5px solid var(--line);
+  border-radius:var(--r);
+  padding:14px 16px;
+  box-shadow:var(--sh-md);
+  z-index:5;
+}
+.hv-f1{top:-22px;right:-22px;animation:flt 4s ease-in-out infinite;}
+.hv-f2{bottom:30px;right:-28px;animation:flt 5s ease-in-out infinite .7s;}
+.hv-f3{bottom:-20px;left:20px;animation:flt 4.5s ease-in-out infinite 1.2s;}
+@keyframes flt{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+.hv-float-inner{display:flex;align-items:center;gap:10px;}
+.hv-fi{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.hv-f-lbl{font-size:11px;font-weight:600;color:var(--ink-3);}
+.hv-f-val{font-size:14px;font-weight:800;color:var(--ink);}
+.hv-f-val em{font-style:normal;color:var(--indigo);}
+
+/* ─────────────────────────────
+   TRUST BAR
+───────────────────────────── */
+.trust{
+  padding:28px 0;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  background:var(--white);
+}
+.trust-inner{
+  display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:center;
+}
+.trust-lbl{font-size:12.5px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;}
+.trust-items{display:flex;align-items:center;gap:32px;flex-wrap:wrap;justify-content:center;}
+.trust-item{
+  display:flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:700;color:var(--ink-2);
+}
+.trust-item i{color:var(--emerald);font-size:13px;}
+
+/* ─────────────────────────────
+   TOOLS SECTION
+───────────────────────────── */
+.tools{padding:88px 0 80px;}
+
+/* Layout: sidebar + main */
+.tools-layout{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:32px;
+  align-items:start;
+}
+
+/* ── Sidebar ── */
+.t-sidebar{
+  position:sticky;top:86px;
+  background:var(--white);
+  border:1.5px solid var(--line);
+  border-radius:var(--r2);
+  padding:22px 16px;
+  box-shadow:var(--sh-xs);
+}
+.tsb-title{
+  font-size:11px;font-weight:800;color:var(--ink-3);
+  text-transform:uppercase;letter-spacing:.1em;
+  margin-bottom:14px;padding-bottom:12px;
+  border-bottom:1px solid var(--line);
+}
+.tsb-search{
+  display:flex;align-items:center;gap:7px;
+  background:var(--chip);border:1.5px solid var(--line);
+  border-radius:9px;padding:9px 12px;margin-bottom:14px;
+  transition:border-color .2s;
+}
+.tsb-search:focus-within{border-color:var(--indigo);}
+.tsb-search i{color:var(--ink-3);font-size:13px;}
+.tsb-search input{flex:1;border:none;outline:none;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink);background:transparent;}
+.tsb-search input::placeholder{color:var(--ink-3);}
+
+.scat{
+  display:flex;align-items:center;gap:9px;
+  padding:10px 12px;border-radius:10px;
+  cursor:pointer;transition:all .2s;margin-bottom:3px;
+}
+.scat:hover{background:var(--chip);}
+.scat.on{background:var(--indigo-10);}
+.scat-ic{
+  width:30px;height:30px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;transition:all .2s;
+}
+.scat-lbl{font-size:13px;font-weight:700;color:var(--ink-2);flex:1;transition:color .2s;}
+.scat-n{font-size:11px;font-weight:700;color:var(--ink-3);background:var(--chip);padding:2px 7px;border-radius:100px;transition:all .2s;}
+.scat.on .scat-lbl{color:var(--indigo);}
+.scat.on .scat-ic{background:var(--indigo-10);}
+.scat.on .scat-n{background:var(--indigo-18);color:var(--indigo);}
+
+/* ── Main area ── */
+.tools-main{}
+.tools-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:16px;margin-bottom:28px;flex-wrap:wrap;
+}
+.th-left{}
+.th-eyebrow{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:12px;font-weight:700;color:var(--indigo);
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;
+}
+.th-eyebrow::before{content:'';width:18px;height:2px;background:var(--indigo);border-radius:2px;}
+.tools-head h2{
+  font-family:var(--sans);font-size:clamp(22px,2.5vw,32px);
+  font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink);
+}
+.tools-head h2 em{font-style:normal;color:var(--indigo);}
+.tools-head p{font-size:14px;color:var(--ink-2);margin-top:7px;}
+.t-showing{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--chip);border:1.5px solid var(--line);
+  border-radius:100px;padding:7px 16px;
+  font-size:13px;font-weight:700;color:var(--ink-2);
+  white-space:nowrap;
+}
+.t-showing strong{color:var(--indigo);}
+
+/* TOOL GRID */
+.tgrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+/* ── tool card ── */
+.tc{
+  background:var(--white);
+  border:1.5px solid var(--line);
+  border-radius:var(--r);
+  padding:22px;
+  display:flex;flex-direction:column;gap:11px;
+  cursor:pointer;transition:all .25s ease;
+  position:relative;overflow:hidden;
+  box-shadow:var(--sh-xs);
+}
+.tc:hover{
+  border-color:rgba(79,70,229,.22);
+  transform:translateY(-4px);
+  box-shadow:var(--sh-lg);
+}
+.tc::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--indigo),var(--violet));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s ease;
+}
+.tc:hover::after{transform:scaleX(1);}
+
+/* featured (spans 2 cols) */
+.tc.feat{
+  grid-column:span 2;
+  background:linear-gradient(145deg,rgba(79,70,229,.04),var(--white));
+  border-color:rgba(79,70,229,.16);
+}
+.tc.feat:hover{border-color:rgba(79,70,229,.35);box-shadow:0 20px 56px rgba(79,70,229,.16);}
+.tc.feat h4{font-size:18px;}
+.tc.feat p{font-size:14px;color:var(--ink-2);}
+
+/* card icon */
+.tc-ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.ic-ind{background:var(--indigo-10);color:var(--indigo);}
+.ic-eme{background:rgba(16,185,129,.1);color:var(--emerald);}
+.ic-amb{background:rgba(245,158,11,.1);color:var(--amber);}
+.ic-vio{background:rgba(139,92,246,.1);color:var(--violet);}
+.ic-sky{background:rgba(14,165,233,.1);color:var(--sky);}
+.ic-orn{background:rgba(249,115,22,.1);color:var(--orange);}
+.ic-ros{background:rgba(244,63,94,.1);color:var(--rose);}
+
+/* card top */
+.tc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+
+/* badge */
+.tb{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:100px;flex-shrink:0;margin-top:2px;}
+.tb-free{background:rgba(16,185,129,.1);color:var(--emerald);}
+.tb-ai  {background:var(--indigo-10);color:var(--indigo);}
+.tb-new {background:rgba(245,158,11,.12);color:var(--amber);}
+.tb-hot {background:rgba(244,63,94,.1);color:var(--rose);}
+
+/* category label */
+.tc-cat{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10.5px;font-weight:700;color:var(--ink-3);
+  text-transform:uppercase;letter-spacing:.05em;
+  padding:3px 9px;border-radius:100px;
+  background:var(--chip);align-self:flex-start;
+}
+
+.tc h4{font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1.28;}
+.tc p{font-size:13px;color:var(--ink-3);line-height:1.55;flex:1;}
+
+.tc-link{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:800;color:var(--indigo);
+  transition:gap .2s;margin-top:auto;
+}
+.tc-link i{font-size:10px;}
+.tc:hover .tc-link{gap:11px;}
+
+/* grid footer */
+.tgrid-footer{
+  margin-top:24px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:14px;flex-wrap:wrap;
+  padding:20px 24px;
+  background:var(--white);
+  border:1.5px solid var(--line);
+  border-radius:var(--r);
+  box-shadow:var(--sh-xs);
+}
+.tgrid-footer p{font-size:14px;font-weight:600;color:var(--ink-2);}
+.tgrid-footer p strong{color:var(--ink);font-weight:800;}
+
+/* ─────────────────────────────
+   MARQUEE
+───────────────────────────── */
+.mq{
+  padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:var(--white);overflow:hidden;
+  mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent);
+}
+.mq-t{display:flex;gap:48px;width:max-content;animation:mqr 22s linear infinite;}
+@keyframes mqr{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.mq-i{
+  display:flex;align-items:center;gap:9px;
+  font-size:12px;font-weight:700;color:var(--ink-3);
+  text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;
+}
+.mq-i i{color:var(--indigo);font-size:9px;}
+
+/* ─────────────────────────────
+   FOOTER
+───────────────────────────── */
+.footer{background:#0D0F1C;padding:68px 0 34px;}
+.fg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:52px;margin-bottom:52px;}
+.fb-logo{display:flex;align-items:center;gap:9px;color:#fff;margin-bottom:14px;}
+.fb-logo .logo-mark{background:transparent;}
+.fb-logo .dot{color:#8B8FFF;}
+.fb-logo span{font-size:19px;font-weight:800;letter-spacing:-.03em;}
+.fb-desc{font-size:13.5px;color:rgba(255,255,255,.38);line-height:1.7;max-width:250px;}
+.fb-soc{display:flex;gap:8px;margin-top:22px;}
+.fb-soc-btn{
+  width:34px;height:34px;border-radius:9px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.38);font-size:13px;
+  transition:all .2s;cursor:pointer;
+}
+.fb-soc-btn:hover{background:var(--indigo);border-color:var(--indigo);color:#fff;}
+.fcol h5{font-size:11px;font-weight:800;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px;}
+.fcol ul{display:flex;flex-direction:column;gap:11px;}
+.fcol ul li a{font-size:13.5px;font-weight:500;color:rgba(255,255,255,.38);transition:color .2s;}
+.fcol ul li a:hover{color:rgba(255,255,255,.8);}
+.fbot{border-top:1px solid rgba(255,255,255,.07);padding-top:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.fbot p{font-size:13px;font-weight:500;color:rgba(255,255,255,.28);}
+.fbot p span{color:#8B8FFF;}
+.fbot-links{display:flex;gap:18px;}
+.fbot-links a{font-size:12.5px;color:rgba(255,255,255,.28);transition:color .2s;}
+.fbot-links a:hover{color:rgba(255,255,255,.6);}
+
+/* ─────────────────────────────
+   SCROLL REVEAL
+───────────────────────────── */
+.up{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease;}
+.up.in{opacity:1;transform:none;}
+.up.in{opacity:1;transform:none;}
+.up.d1{transition-delay:.1s;}.up.d2{transition-delay:.18s;}
+.up.d3{transition-delay:.26s;}.up.d4{transition-delay:.34s;}
+
+/* ─────────────────────────────
+   RESPONSIVE
+───────────────────────────── */
+@media(max-width:1100px){
+  .hero-split{grid-template-columns:1fr;gap:48px;}
+  .hero-h1{max-width:600px;}
+  .hero-p,.hero-search{max-width:520px;}
+  .hv-f1,.hv-f2,.hv-f3{display:none;}
+  .tools-layout{grid-template-columns:1fr;}
+  .t-sidebar{position:static;display:flex;flex-wrap:wrap;gap:6px;padding:16px;}
+  .tsb-title,.tsb-search{width:100%;flex-shrink:0;}
+  .tsb-search{margin-bottom:6px;}
+  .fg{grid-template-columns:1fr 1fr;gap:36px;}
+}
+@media(max-width:860px){
+  .tgrid{grid-template-columns:repeat(2,1fr);}
+  .tc.feat{grid-column:span 2;}
+}
+@media(max-width:640px){
+  .nav-links,.nav-right .btn-white{display:none;}
+  .ham{display:flex;}
+  .tgrid{grid-template-columns:1fr;}
+  .tc.feat{grid-column:span 1;}
+  .hero-stats{flex-direction:column;width:100%;}
+  .hstat{border-right:none;border-bottom:1px solid var(--line);}
+  .hstat:last-child{border-bottom:none;}
+  .fg{grid-template-columns:1fr;gap:28px;}
+  .hero-visual{display:none;}
+}
+
+/* ═══════════════════════════════════════
+   HERO  —  thefox-style floating cards
+═══════════════════════════════════════ */
+
+/* ── Background ── */
+.hero{
+  min-height:100vh;
+  padding:0;
+  position:relative;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  background:linear-gradient(150deg,#E8F0FE 0%,#EEE8FD 40%,#E4EEF8 100%);
+}
+/* Teal splash top-left */
+.hero::before{
+  content:'';
+  position:absolute;top:-80px;left:-80px;
+  width:420px;height:420px;
+  background:radial-gradient(circle at 40% 40%,#67E8F9 0%,#38BDF8 35%,transparent 70%);
+  opacity:.38;border-radius:50%;
+  filter:blur(10px);
+}
+/* Soft violet bottom-right */
+.hero::after{
+  content:'';
+  position:absolute;bottom:-120px;right:-60px;
+  width:500px;height:500px;
+  background:radial-gradient(circle at 50% 50%,#C4B5FD 0%,#A78BFA 40%,transparent 70%);
+  opacity:.22;border-radius:50%;
+  filter:blur(20px);
+}
+
+/* ── Decorative elements ── */
+.deco{position:absolute;pointer-events:none;z-index:1;}
+.deco-circle{border-radius:50%;}
+/* white circles */
+.dc1{width:64px;height:64px;top:18%;right:26%;background:rgba(255,255,255,.9);box-shadow:0 8px 30px rgba(150,130,200,.15);}
+.dc2{width:38px;height:38px;top:72%;right:12%;background:rgba(255,255,255,.85);box-shadow:0 6px 22px rgba(150,130,200,.12);}
+.dc3{width:24px;height:24px;top:55%;right:32%;background:rgba(255,255,255,.8);}
+.dc4{width:18px;height:18px;top:30%;left:46%;background:rgba(255,255,255,.75);}
+/* coloured dots */
+.dd1{width:14px;height:14px;top:22%;left:38%;background:#FDA4AF;border-radius:50%;}
+.dd2{width:10px;height:10px;top:65%;left:42%;background:#FCA5A5;border-radius:50%;}
+.dd3{width:12px;height:12px;top:78%;right:36%;background:#93C5FD;border-radius:50%;}
+/* symbols */
+.dsym{font-size:22px;font-weight:900;line-height:1;}
+.dx1{top:8%;left:6%;color:#60A5FA;opacity:.55;}
+.dx2{top:76%;left:8%;color:#A78BFA;opacity:.45;font-size:30px;}
+.dwave{top:85%;right:22%;color:#7DD3FC;opacity:.4;font-size:28px;}
+.dplus{top:40%;left:8%;color:#C4B5FD;opacity:.5;font-size:26px;font-family:monospace;}
+
+/* ═══════════════════════════════
+   HERO LAYOUT
+═══════════════════════════════ */
+.hero-wrap{
+  max-width:1240px;
+  margin:0 auto;
+  padding:110px 48px 60px;
+  flex:1;
+  display:flex;
+  align-items:center;
+  position:relative;
+  z-index:5;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1fr 560px;
+  gap:60px;
+  align-items:center;
+  width:100%;
+}
+
+/* ── LEFT COLUMN ── */
+.hl{}
+
+.hl-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(167,139,250,.15);
+  border:1.5px solid rgba(167,139,250,.35);
+  border-radius:100px;padding:6px 16px;
+  margin-bottom:26px;
+  font-size:13px;font-weight:700;
+  color:#7C3AED;
+}
+.hl-badge .badge-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#A78BFA;
+  animation:bdot 2s ease-in-out infinite;
+}
+@keyframes bdot{0%,100%{transform:scale(1);}50%{transform:scale(1.5);opacity:.6;}}
+
+.hl-h1{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:clamp(36px,3.8vw,54px);
+  font-weight:900;line-height:1.1;
+  letter-spacing:-.04em;color:#0D0F1C;
+  margin-bottom:20px;
+}
+.hl-h1 .ac{color:#4F46E5;}
+
+.hl-p{
+  font-size:16px;font-weight:400;
+  color:#525A7A;line-height:1.75;
+  max-width:400px;margin-bottom:36px;
+}
+.hl-p strong{color:#0D0F1C;font-weight:700;}
+
+.hl-cta{
+  display:flex;align-items:center;
+  gap:14px;margin-bottom:44px;flex-wrap:wrap;
+}
+.cta-main{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,#6366F1,#8B5CF6);
+  color:#fff;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:15px;font-weight:800;
+  padding:15px 30px;border-radius:100px;
+  border:none;cursor:pointer;
+  box-shadow:0 8px 28px rgba(99,102,241,.38);
+  transition:all .25s;text-decoration:none;
+}
+.cta-main:hover{transform:translateY(-2px);box-shadow:0 14px 38px rgba(99,102,241,.48);}
+.cta-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.8);
+  border:1.5px solid rgba(99,102,241,.22);
+  color:#525A7A;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:14px;font-weight:700;
+  padding:13px 22px;border-radius:100px;
+  backdrop-filter:blur(8px);
+  transition:all .22s;text-decoration:none;
+}
+.cta-ghost:hover{background:#fff;border-color:rgba(99,102,241,.4);color:#4F46E5;transform:translateY(-2px);}
+
+.hl-trust{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+.ht-item{
+  display:flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:600;color:#9DA3C4;
+}
+.ht-item i{color:#10B981;font-size:12px;}
+
+/* ═══════════════════════════════
+   RIGHT COLUMN — FLOATING CARDS
+═══════════════════════════════ */
+.hr{
+  position:relative;
+  width:560px;
+  height:580px;
+}
+
+/* All cards absolutely positioned inside .hr */
+.fcard{
+  position:absolute;
+  background:#FFFFFF;
+  border-radius:18px;
+  box-shadow:0 10px 40px rgba(99,102,241,.13),0 2px 8px rgba(13,15,28,.07);
+  border:1px solid #EDEEF6;
+  overflow:hidden;
+  width:170px;
+}
+
+/* ── 3×2 grid inside the 560px container ──
+   Col A: left:0      Col B: left:192px   Col C: left:384px
+   Row 1: top:20px    Row 2: bottom:20px
+*/
+.fc1{ top:20px;  left:0;    animation:flt1 5s  ease-in-out infinite 0s;   }
+.fc2{ top:0px;   left:192px;animation:flt2 6s  ease-in-out infinite .7s;  }
+.fc3{ top:20px;  left:384px;animation:flt3 4.5s ease-in-out infinite 1.2s;}
+.fc4{ bottom:20px;left:0;   animation:flt4 5.5s ease-in-out infinite .4s; }
+.fc5{ bottom:0px; left:192px;animation:flt5 6.5s ease-in-out infinite 1s; }
+.fc6{ bottom:20px;left:384px;animation:flt6 5s  ease-in-out infinite 1.5s;}
+.fc7{ display:none; }
+
+/* Each card has its own unique gentle float + slight rotation */
+@keyframes flt1{0%,100%{transform:rotate(-3deg) translateY(0);}50%{transform:rotate(-3deg) translateY(-8px);}}
+@keyframes flt2{0%,100%{transform:rotate(2deg)  translateY(0);}50%{transform:rotate(2deg)  translateY(-9px);}}
+@keyframes flt3{0%,100%{transform:rotate(-2deg) translateY(0);}50%{transform:rotate(-2deg) translateY(-7px);}}
+@keyframes flt4{0%,100%{transform:rotate(3deg)  translateY(0);}50%{transform:rotate(3deg)  translateY(-8px);}}
+@keyframes flt5{0%,100%{transform:rotate(-2deg) translateY(0);}50%{transform:rotate(-2deg) translateY(-9px);}}
+@keyframes flt6{0%,100%{transform:rotate(2deg)  translateY(0);}50%{transform:rotate(2deg)  translateY(-7px);}}
+
+/* ── CARD INTERNALS ── */
+.card-header{
+  padding:12px 14px 9px;
+  border-bottom:1px solid #F1F3F9;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.card-icon-wrap{
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:12px;
+}
+.card-title{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:11px;font-weight:800;color:#0D0F1C;
+}
+.card-sub{font-size:9.5px;font-weight:600;color:#9DA3C4;margin-top:1px;}
+.card-badge{
+  font-size:9px;font-weight:800;
+  padding:2px 7px;border-radius:100px;
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.cb-green{background:rgba(16,185,129,.1);color:#10B981;}
+.cb-amber{background:rgba(245,158,11,.12);color:#D97706;}
+.cb-indigo{background:rgba(79,70,229,.1);color:#4F46E5;}
+.cb-rose{background:rgba(244,63,94,.1);color:#F43F5E;}
+.card-body{padding:10px 14px 13px;}
+
+/* Keyword rows */
+.krow{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 7px;border-radius:7px;
+  background:#F8F9FE;margin-bottom:4px;
+}
+.krow:last-child{margin-bottom:0;}
+.krow-kw{font-size:10px;font-weight:600;color:#0D0F1C;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.krow-vol{font-size:9.5px;font-weight:700;color:#525A7A;}
+.kpill{font-size:8.5px;font-weight:800;padding:2px 6px;border-radius:100px;}
+.kp-e{background:rgba(16,185,129,.1);color:#10B981;}
+.kp-m{background:rgba(245,158,11,.12);color:#D97706;}
+.kp-h{background:rgba(244,63,94,.1);color:#F43F5E;}
+
+/* Score ring */
+.score-ring{
+  width:64px;height:64px;border-radius:50%;
+  background:conic-gradient(var(--clr,#4F46E5) var(--pct,75%),#F1F3F9 0%);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 6px;position:relative;
+}
+.score-ring::before{
+  content:'';position:absolute;
+  width:46px;height:46px;background:#fff;border-radius:50%;
+}
+.score-val{
+  position:relative;z-index:1;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:14px;font-weight:900;color:#0D0F1C;
+}
+.score-lbl{font-size:10px;font-weight:700;color:#9DA3C4;text-align:center;}
+
+/* Stat rows */
+.stat-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.stat-row:last-child{margin-bottom:0;}
+.stat-lbl{font-size:10px;font-weight:600;color:#9DA3C4;}
+.stat-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:800;color:#0D0F1C;}
+.stat-chg{font-size:9.5px;font-weight:700;}
+.up-g{color:#10B981;}
+.down-r{color:#F43F5E;}
+
+/* Progress bars */
+.pbar-wrap{margin-bottom:5px;}
+.pbar-wrap:last-child{margin-bottom:0;}
+.pbar-head{display:flex;justify-content:space-between;margin-bottom:2px;}
+.pbar-lbl{font-size:9.5px;font-weight:600;color:#525A7A;}
+.pbar-val{font-size:9.5px;font-weight:800;color:#0D0F1C;}
+.pbar{height:4px;background:#F1F3F9;border-radius:99px;overflow:hidden;}
+.pbar-fill{height:100%;border-radius:99px;}
+
+/* ── HERO BOTTOM STRIP ── */
+.hero-strip{
+  background:rgba(255,255,255,.6);
+  backdrop-filter:blur(16px);
+  border-top:1px solid rgba(255,255,255,.85);
+  padding:16px 0;
+  position:relative;z-index:5;
+}
+.hs-inner{
+  max-width:1240px;margin:0 auto;padding:0 48px;
+  display:flex;align-items:center;
+  gap:0;justify-content:space-between;flex-wrap:wrap;
+}
+.hs-item{
+  display:flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:700;color:#525A7A;
+  padding:4px 0;
+}
+.hs-item i{color:#4F46E5;font-size:12px;}
+.hs-sep{width:1px;height:20px;background:#E8EAF6;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1140px){
+  .hero-grid{grid-template-columns:1fr 480px;gap:40px;}
+  .hr{width:480px;}
+  .fc3{left:320px;}.fc6{left:320px;}
+  .fcard{width:148px;}
+}
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr;gap:40px;}
+  .hr{width:100%;max-width:560px;height:520px;margin:0 auto;}
+  .fc3{left:384px;}.fc6{left:384px;}
+  .fcard{width:170px;}
+}
+@media(max-width:640px){
+  .hr{display:none;}
+  .hero-wrap{padding:90px 24px 50px;}
+  .hl-h1{font-size:34px;}
+  .hs-inner{justify-content:center;gap:16px;}
+  .hs-sep{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ████ NAV ████ -->
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <div class="nav-row">
+      <a href="index.html" class="logo">
+        <div class="logo-mark"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sdgN" x1="0" y1="0" x2="36" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#00D4FF"/><stop offset="0.5" stop-color="#7B5FFF"/><stop offset="1" stop-color="#B44FFF"/></linearGradient></defs><rect width="36" height="36" rx="9" fill="#14126E"/><path d="M7 12C7 10 8.5 8.5 11 8.5C13.8 8.5 15 10 15 11.8C15 13.6 13.8 14.5 11.8 15C9.8 15.5 8.2 16.5 8.2 18.5C8.2 20.5 9.5 22 12 22C13.8 22 15 21 15 21" stroke="url(#sdgN)" stroke-width="2" stroke-linecap="round" fill="none"/><rect x="17.5" y="8.5" width="1.8" height="13.5" rx="0.9" fill="white"/><path d="M19.3 8.5H21C24 8.5 25.8 11 25.8 15.2C25.8 19.4 24 22 21 22H19.3V8.5Z" fill="white"/><path d="M21.3 11H21V19.5H21.3C22.9 19.5 23.7 18 23.7 15.2C23.7 12.5 22.9 11 21.3 11Z" fill="#14126E"/><circle cx="28" cy="9.5" r="1.8" fill="url(#sdgN)"/></svg></div>
+        Serp<span class="dot">Dex</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#tools">All Tools</a></li>
+        <li><a href="#tools">Keyword</a></li>
+        <li><a href="#tools">Technical</a></li>
+        <li><a href="#tools">Content</a></li>
+        <li><a href="#tools">Local SEO</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="#tools" class="btn btn-white" style="padding:9px 18px;font-size:13.5px;">
+          <i class="fa-solid fa-grid-2"></i> Browse Tools
+        </a>
+        <a href="#tools" class="btn btn-indigo" style="padding:9px 20px;font-size:13.5px;">
+          <i class="fa-solid fa-bolt"></i> Try Free
+        </a>
+      </div>
+      <div class="ham" id="ham"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- ████ HERO  ████ -->
+<section class="hero" id="home">
+
+  <!-- Decorative elements -->
+  <span class="deco deco-circle dc1"></span>
+  <span class="deco deco-circle dc2"></span>
+  <span class="deco deco-circle dc3"></span>
+  <span class="deco deco-circle dc4"></span>
+  <span class="deco deco-circle dd1"></span>
+  <span class="deco deco-circle dd2"></span>
+  <span class="deco deco-circle dd3"></span>
+  <span class="deco dsym dx1">✕</span>
+  <span class="deco dsym dx2">✦</span>
+  <span class="deco dsym dwave">〜</span>
+  <span class="deco dsym dplus">+</span>
+
+  <!-- Main content -->
+  <div class="hero-wrap">
+    <div class="hero-grid">
+
+      <!-- ── LEFT ── -->
+      <div class="hl">
+
+        <div class="hl-badge">
+          <span class="badge-dot"></span>
+          100% Free SEO Toolkit
+        </div>
+
+        <h1 class="hl-h1">
+          All The SEO<br>
+          Tools You Need.<br>
+          <span class="ac">Zero Cost.</span>
+        </h1>
+
+        <p class="hl-p">
+          <strong>50+ professional SEO tools</strong> — keyword research,
+          technical audits, content optimization, backlinks & more.
+          Open any tool and start instantly. No sign-up. No limits.
+        </p>
+
+        <div class="hl-cta">
+          <a href="#tools" class="cta-main">
+            <i class="fa-solid fa-rocket"></i> Explore Free Tools
+          </a>
+          <a href="#tools" class="cta-ghost">
+            <i class="fa-solid fa-grid-2"></i> View All 50+
+          </a>
+        </div>
+
+        <div class="hl-trust">
+          <div class="ht-item"><i class="fa-solid fa-circle-check"></i> No sign-up</div>
+          <div class="ht-item"><i class="fa-solid fa-circle-check"></i> No credit card</div>
+          <div class="ht-item"><i class="fa-solid fa-circle-check"></i> Always free</div>
+          <div class="ht-item"><i class="fa-solid fa-circle-check"></i> Use instantly</div>
+        </div>
+
+      </div>
+
+      <!-- ── RIGHT — Floating cards ── -->
+      <div class="hr">
+        <div class="cards-scene">
+
+          <!-- Card 1: AI Keyword Research -->
+          <div class="fcard fc1">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Keyword Research</div>
+                <div class="card-sub">AI-powered · Free</div>
+              </div>
+              <div class="card-icon-wrap" style="background:rgba(79,70,229,.1);">
+                <i class="fa-solid fa-magnifying-glass-chart" style="color:#4F46E5;"></i>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="krow">
+                <span class="krow-kw">free seo tools</span>
+                <span class="krow-vol">22K</span>
+                <span class="kpill kp-e">Easy</span>
+              </div>
+              <div class="krow">
+                <span class="krow-kw">keyword planner</span>
+                <span class="krow-vol">74K</span>
+                <span class="kpill kp-m">Med</span>
+              </div>
+              <div class="krow">
+                <span class="krow-kw">site audit tool</span>
+                <span class="krow-vol">18K</span>
+                <span class="kpill kp-e">Easy</span>
+              </div>
+              <div class="krow">
+                <span class="krow-kw">backlink checker</span>
+                <span class="krow-vol">90K</span>
+                <span class="kpill kp-h">Hard</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Site Audit Score -->
+          <div class="fcard fc2">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Site Health</div>
+                <div class="card-sub">SEO Audit</div>
+              </div>
+              <span class="card-badge cb-green">Live</span>
+            </div>
+            <div class="card-body" style="text-align:center;padding:16px;">
+              <div class="score-ring" style="--clr:#10B981;--pct:92%;">
+                <span class="score-val">92</span>
+              </div>
+              <div class="score-lbl">Excellent Score</div>
+              <div style="margin-top:10px;">
+                <div class="pbar-wrap">
+                  <div class="pbar-head"><span class="pbar-lbl">Performance</span><span class="pbar-val">96</span></div>
+                  <div class="pbar"><div class="pbar-fill" style="width:96%;background:#4F46E5;"></div></div>
+                </div>
+                <div class="pbar-wrap">
+                  <div class="pbar-head"><span class="pbar-lbl">Accessibility</span><span class="pbar-val">88</span></div>
+                  <div class="pbar"><div class="pbar-fill" style="width:88%;background:#10B981;"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Backlink Checker -->
+          <div class="fcard fc3">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Backlink Checker</div>
+                <div class="card-sub">Link Analysis</div>
+              </div>
+              <div class="card-icon-wrap" style="background:rgba(14,165,233,.1);">
+                <i class="fa-solid fa-link" style="color:#0EA5E9;"></i>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="stat-row">
+                <span class="stat-lbl">Total Backlinks</span>
+                <span class="stat-val">4,820</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-lbl">Ref. Domains</span>
+                <span class="stat-val">312</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-lbl">DA Score</span>
+                <span class="stat-val" style="color:#4F46E5;">68</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-lbl">New (30d)</span>
+                <span class="stat-chg up-g">+148 ↑</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: Page Speed -->
+          <div class="fcard fc4">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Page Speed</div>
+                <div class="card-sub">Core Web Vitals</div>
+              </div>
+              <span class="card-badge cb-green">Pass</span>
+            </div>
+            <div class="card-body" style="text-align:center;padding:12px 14px;">
+              <div class="score-ring" style="--clr:#6366F1;--pct:98%;width:60px;height:60px;">
+                <span class="score-val" style="font-size:14px;">98</span>
+              </div>
+              <div class="score-lbl" style="margin-bottom:8px;">Performance</div>
+              <div class="stat-row">
+                <span class="stat-lbl">LCP</span>
+                <span class="stat-val" style="color:#10B981;font-size:12px;">1.2s</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-lbl">CLS</span>
+                <span class="stat-val" style="color:#10B981;font-size:12px;">0.04</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5: Meta Generator -->
+          <div class="fcard fc5">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Meta Generator</div>
+                <div class="card-sub">On-Page SEO</div>
+              </div>
+              <div class="card-icon-wrap" style="background:rgba(244,63,94,.1);">
+                <i class="fa-solid fa-tags" style="color:#F43F5E;"></i>
+              </div>
+            </div>
+            <div class="card-body">
+              <div style="background:#F8F9FE;border-radius:8px;padding:8px 10px;margin-bottom:7px;">
+                <div style="font-size:9.5px;font-weight:700;color:#9DA3C4;margin-bottom:3px;">TITLE TAG</div>
+                <div style="font-size:11px;font-weight:600;color:#1A56DB;">Best Free SEO Tools 2025 | SerpDex</div>
+              </div>
+              <div style="background:#F8F9FE;border-radius:8px;padding:8px 10px;">
+                <div style="font-size:9.5px;font-weight:700;color:#9DA3C4;margin-bottom:3px;">META DESC</div>
+                <div style="font-size:10.5px;color:#525A7A;line-height:1.4;">50+ free SEO tools — keyword research, site audit, backlinks & more. No account needed.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6: Content Score -->
+          <div class="fcard fc6">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Content Score</div>
+                <div class="card-sub">AI Optimizer</div>
+              </div>
+              <div class="card-icon-wrap" style="background:rgba(139,92,246,.1);">
+                <i class="fa-solid fa-wand-magic-sparkles" style="color:#8B5CF6;"></i>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="pbar-wrap">
+                <div class="pbar-head"><span class="pbar-lbl">Readability</span><span class="pbar-val">91%</span></div>
+                <div class="pbar"><div class="pbar-fill" style="width:91%;background:#8B5CF6;"></div></div>
+              </div>
+              <div class="pbar-wrap">
+                <div class="pbar-head"><span class="pbar-lbl">SEO Score</span><span class="pbar-val">87%</span></div>
+                <div class="pbar"><div class="pbar-fill" style="width:87%;background:#4F46E5;"></div></div>
+              </div>
+              <div class="pbar-wrap" style="margin-bottom:0;">
+                <div class="pbar-head"><span class="pbar-lbl">E-E-A-T</span><span class="pbar-val">78%</span></div>
+                <div class="pbar"><div class="pbar-fill" style="width:78%;background:#10B981;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 7: Local SEO -->
+          <div class="fcard fc7">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Local SEO</div>
+                <div class="card-sub">GBP Analyzer</div>
+              </div>
+              <span class="card-badge cb-amber">New</span>
+            </div>
+            <div class="card-body">
+              <div class="stat-row">
+                <span class="stat-lbl">Citations</span>
+                <span class="stat-val">48/50</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-lbl">Reviews</span>
+                <span class="stat-val" style="color:#F59E0B;">4.8 ★</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-lbl">NAP Errors</span>
+                <span class="stat-chg up-g">0 ✓</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /cards-scene -->
+      </div><!-- /hr -->
+
+    </div><!-- /hero-grid -->
+  </div><!-- /hero-wrap -->
+
+  <!-- Bottom strip -->
+  <div class="hero-strip">
+    <div class="hs-inner">
+      <div class="hs-item"><i class="fa-solid fa-circle-check"></i> No account needed</div>
+      <div class="hs-sep"></div>
+      <div class="hs-item"><i class="fa-solid fa-circle-check"></i> No credit card</div>
+      <div class="hs-sep"></div>
+      <div class="hs-item"><i class="fa-solid fa-circle-check"></i> 50+ professional tools</div>
+      <div class="hs-sep"></div>
+      <div class="hs-item"><i class="fa-solid fa-circle-check"></i> Open & use instantly</div>
+      <div class="hs-sep"></div>
+      <div class="hs-item"><i class="fa-solid fa-circle-check"></i> Forever free</div>
+    </div>
+  </div>
+
+</section>
+<!-- MARQUEE -->
+<div class="mq">
+  <div class="mq-t">
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Keyword Research</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>On-Page SEO</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Technical Audit</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Content Optimizer</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Backlink Checker</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Local SEO</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Page Speed</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Schema Markup</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>AI Writing</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Competitor Analysis</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Keyword Research</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>On-Page SEO</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Technical Audit</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Content Optimizer</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Backlink Checker</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Local SEO</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Page Speed</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Schema Markup</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>AI Writing</span>
+    <span class="mq-i"><i class="fa-solid fa-circle-dot"></i>Competitor Analysis</span>
+  </div>
+</div>
+
+<!-- ████ TOOLS ████ -->
+<section class="tools" id="tools">
+  <div class="wrap">
+    <div class="tools-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="t-sidebar up">
+        <div class="tsb-title">Filter by Category</div>
+        <div class="tsb-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="sbInput" placeholder="Search tools…" oninput="liveSearch(this.value)"/>
+        </div>
+        <div class="scat on" onclick="sideCat('all',this)">
+          <div class="scat-ic" style="background:var(--indigo-10);"><i class="fa-solid fa-layer-group" style="color:var(--indigo);"></i></div>
+          <span class="scat-lbl">All Tools</span>
+          <span class="scat-n">20</span>
+        </div>
+        <div class="scat" onclick="sideCat('keyword',this)">
+          <div class="scat-ic ic-ind"><i class="fa-solid fa-key" style="color:var(--indigo);font-size:12px;"></i></div>
+          <span class="scat-lbl">Keyword</span>
+          <span class="scat-n">6</span>
+        </div>
+        <div class="scat" onclick="sideCat('onpage',this)">
+          <div class="scat-ic ic-ros"><i class="fa-solid fa-file-lines" style="color:var(--rose);font-size:12px;"></i></div>
+          <span class="scat-lbl">On-Page SEO</span>
+          <span class="scat-n">5</span>
+        </div>
+        <div class="scat" onclick="sideCat('technical',this)">
+          <div class="scat-ic ic-eme"><i class="fa-solid fa-gears" style="color:var(--emerald);font-size:12px;"></i></div>
+          <span class="scat-lbl">Technical SEO</span>
+          <span class="scat-n">5</span>
+        </div>
+        <div class="scat" onclick="sideCat('content',this)">
+          <div class="scat-ic ic-vio"><i class="fa-solid fa-pen-nib" style="color:var(--violet);font-size:12px;"></i></div>
+          <span class="scat-lbl">Content Tools</span>
+          <span class="scat-n">4</span>
+        </div>
+        <div class="scat" onclick="sideCat('link',this)">
+          <div class="scat-ic ic-sky"><i class="fa-solid fa-link" style="color:var(--sky);font-size:12px;"></i></div>
+          <span class="scat-lbl">Link & Authority</span>
+          <span class="scat-n">4</span>
+        </div>
+        <div class="scat" onclick="sideCat('local',this)">
+          <div class="scat-ic ic-amb"><i class="fa-solid fa-map-location-dot" style="color:var(--amber);font-size:12px;"></i></div>
+          <span class="scat-lbl">Local SEO</span>
+          <span class="scat-n">3</span>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <div class="tools-main">
+        <div class="tools-head up">
+          <div class="th-left">
+            <div class="th-eyebrow">All Free SEO Tools</div>
+            <h2>50+ Tools. <em>Zero Cost.</em> Use Instantly.</h2>
+            <p>No sign up, no paywall. Click any tool and start working right now.</p>
+          </div>
+          <div class="t-showing">
+            <i class="fa-solid fa-grid-2"></i>
+            Showing <strong id="countNum">20</strong> tools
+          </div>
+        </div>
+
+        <div class="tgrid" id="toolGrid">
+
+          <!-- KEYWORD -->
+          <div class="tc feat up" data-cat="keyword">
+            <div class="tc-top">
+              <div class="tc-ic ic-ind"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+              <span class="tb tb-ai"><i class="fa-solid fa-wand-sparkles"></i> AI</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-key"></i> Keyword</span>
+            <h4>AI Keyword Research Tool</h4>
+            <p>Discover high-volume, low-competition keywords with AI clustering, live search volume, CPC & keyword difficulty. No account required.</p>
+            <a href="#" class="tc-link">Open Free Tool <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="tc up d1" data-cat="keyword">
+            <div class="tc-top">
+              <div class="tc-ic ic-vio"><i class="fa-solid fa-list-ul"></i></div>
+              <span class="tb tb-free">Free</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-key"></i> Keyword</span>
+            <h4>Long-Tail Keyword Finder</h4>
+            <p>Find low-competition long-tail keywords that drive targeted organic traffic.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="tc up d2" data-cat="keyword">
+            <div class="tc-top">
+              <div class="tc-ic ic-sky"><i class="fa-solid fa-diagram-project"></i></div>
+              <span class="tb tb-new">New</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-key"></i> Keyword</span>
+            <h4>LSI Keyword Generator</h4>
+            <p>Build semantic keyword clusters to boost topical authority across your site.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <!-- TECHNICAL -->
+          <div class="tc feat up" data-cat="technical">
+            <div class="tc-top">
+              <div class="tc-ic ic-eme"><i class="fa-solid fa-microscope"></i></div>
+              <span class="tb tb-hot"><i class="fa-solid fa-fire"></i> Hot</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-gears"></i> Technical</span>
+            <h4>Full Site SEO Audit Tool</h4>
+            <p>Deep-scan for broken links, missing meta tags, crawl errors, Core Web Vitals issues & duplicate content — instant prioritized fix report, completely free.</p>
+            <a href="#" class="tc-link">Audit My Site <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="tc up d1" data-cat="technical">
+            <div class="tc-top">
+              <div class="tc-ic ic-orn"><i class="fa-solid fa-gauge-high"></i></div>
+              <span class="tb tb-hot">Hot</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-gears"></i> Technical</span>
+            <h4>Page Speed Checker</h4>
+            <p>Test Core Web Vitals (LCP, CLS, FID) and get specific code-level fixes to pass Google.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="tc up d2" data-cat="technical">
+            <div class="tc-top">
+              <div class="tc-ic ic-ind"><i class="fa-solid fa-sitemap"></i></div>
+              <span class="tb tb-free">Free</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-gears"></i> Technical</span>
+            <h4>XML Sitemap Generator</h4>
+            <p>Build a complete XML sitemap for any website. Download and submit to Google.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <!-- ON-PAGE -->
+          <div class="tc up" data-cat="onpage">
+            <div class="tc-top">
+              <div class="tc-ic ic-ros"><i class="fa-solid fa-tags"></i></div>
+              <span class="tb tb-free">Free</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-file-lines"></i> On-Page</span>
+            <h4>Meta Tag Generator</h4>
+            <p>Build optimised title tags and meta descriptions with a live Google SERP preview.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="tc up d1" data-cat="onpage">
+            <div class="tc-top">
+              <div class="tc-ic ic-vio"><i class="fa-solid fa-hashtag"></i></div>
+              <span class="tb tb-free">Free</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-file-lines"></i> On-Page</span>
+            <h4>Schema Markup Generator</h4>
+            <p>Build JSON-LD structured data for FAQs, Products, Articles. No coding needed.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="tc up d2" data-cat="onpage">
+            <div class="tc-top">
+              <div class="tc-ic ic-eme"><i class="fa-brands fa-searchengin"></i></div>
+              <span class="tb tb-new">New</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-file-lines"></i> On-Page</span>
+            <h4>SERP Preview Tool</h4>
+            <p>See exactly how your page looks in Google results before publishing it live.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <!-- CONTENT -->
+          <div class="tc feat up" data-cat="content">
+            <div class="tc-top">
+              <div class="tc-ic ic-vio"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+              <span class="tb tb-ai"><i class="fa-solid fa-wand-sparkles"></i> AI</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-pen-nib"></i> Content</span>
+            <h4>AI Content Optimizer</h4>
+            <p>Paste any draft — get AI-powered suggestions to improve keyword usage, readability, E-E-A-T signals, and semantic relevance vs top-ranking pages. No login.</p>
+            <a href="#" class="tc-link">Optimize Free <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="tc up d1" data-cat="content">
+            <div class="tc-top">
+              <div class="tc-ic ic-sky"><i class="fa-solid fa-spell-check"></i></div>
+              <span class="tb tb-free">Free</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-pen-nib"></i> Content</span>
+            <h4>Readability Checker</h4>
+            <p>Score content across Flesch-Kincaid, Gunning Fog & SMOG readability indexes.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="tc up d2" data-cat="content">
+            <div class="tc-top">
+              <div class="tc-ic ic-orn"><i class="fa-solid fa-clone"></i></div>
+              <span class="tb tb-free">Free</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-pen-nib"></i> Content</span>
+            <h4>Plagiarism Checker</h4>
+            <p>Verify content uniqueness against billions of indexed web pages instantly.</p>
+            <a href="serpkit-schema-generator.html" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <!-- LINK -->
+          <div class="tc up" data-cat="link">
+            <div class="tc-top">
+              <div class="tc-ic ic-sky"><i class="fa-solid fa-link"></i></div>
+              <span class="tb tb-hot">Hot</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-link"></i> Links</span>
+            <h4>Backlink Checker</h4>
+            <p>Analyse any domain's backlink profile — referring domains, anchor text & quality.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="tc up d1" data-cat="link">
+            <div class="tc-top">
+              <div class="tc-ic ic-ros"><i class="fa-solid fa-link-slash"></i></div>
+              <span class="tb tb-free">Free</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-link"></i> Links</span>
+            <h4>Broken Link Finder</h4>
+            <p>Crawl any page and surface all 404 and broken outbound links instantly.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="tc up d2" data-cat="link">
+            <div class="tc-top">
+              <div class="tc-ic ic-ind"><i class="fa-solid fa-shield-halved"></i></div>
+              <span class="tb tb-free">Free</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-link"></i> Authority</span>
+            <h4>Domain Authority Checker</h4>
+            <p>Check DA, PA, spam score & trust flow for any domain in seconds.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <!-- LOCAL -->
+          <div class="tc feat up" data-cat="local">
+            <div class="tc-top">
+              <div class="tc-ic ic-amb"><i class="fa-solid fa-map-location-dot"></i></div>
+              <span class="tb tb-new">New</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-map-location-dot"></i> Local SEO</span>
+            <h4>Local SEO Analyzer</h4>
+            <p>Audit your Google Business Profile, check citation consistency across 50+ directories & find NAP errors hurting local pack rankings — free instant report.</p>
+            <a href="#" class="tc-link">Analyse My Business <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="tc up d1" data-cat="technical">
+            <div class="tc-top">
+              <div class="tc-ic ic-eme"><i class="fa-solid fa-robot"></i></div>
+              <span class="tb tb-free">Free</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-gears"></i> Technical</span>
+            <h4>Robots.txt Generator</h4>
+            <p>Create a correct robots.txt file with custom crawl rules for any bot.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="tc up d2" data-cat="keyword">
+            <div class="tc-top">
+              <div class="tc-ic ic-amb"><i class="fa-solid fa-arrow-trend-up"></i></div>
+              <span class="tb tb-new">New</span>
+            </div>
+            <span class="tc-cat"><i class="fa-solid fa-key"></i> Keyword</span>
+            <h4>Keyword Position Checker</h4>
+            <p>Check where your keywords rank on Google, Bing & Yahoo in real time.</p>
+            <a href="#" class="tc-link">Open <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+        </div><!-- /tgrid -->
+
+        <div class="tgrid-footer up">
+          <p>Showing <strong>20 of 50+ tools</strong> — new tools added every week. Always free.</p>
+          <a href="#" class="btn btn-indigo"><i class="fa-solid fa-grid-2"></i> View All 50+ Tools</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ████ FOOTER ████ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="fg">
+      <div>
+        <div class="fb-logo">
+          <div class="logo-mark"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sdgF" x1="0" y1="0" x2="36" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#00D4FF"/><stop offset="0.5" stop-color="#7B5FFF"/><stop offset="1" stop-color="#B44FFF"/></linearGradient></defs><rect width="36" height="36" rx="9" fill="#14126E"/><path d="M7 12C7 10 8.5 8.5 11 8.5C13.8 8.5 15 10 15 11.8C15 13.6 13.8 14.5 11.8 15C9.8 15.5 8.2 16.5 8.2 18.5C8.2 20.5 9.5 22 12 22C13.8 22 15 21 15 21" stroke="url(#sdgF)" stroke-width="2" stroke-linecap="round" fill="none"/><rect x="17.5" y="8.5" width="1.8" height="13.5" rx="0.9" fill="white"/><path d="M19.3 8.5H21C24 8.5 25.8 11 25.8 15.2C25.8 19.4 24 22 21 22H19.3V8.5Z" fill="white"/><path d="M21.3 11H21V19.5H21.3C22.9 19.5 23.7 18 23.7 15.2C23.7 12.5 22.9 11 21.3 11Z" fill="#14126E"/><circle cx="28" cy="9.5" r="1.8" fill="url(#sdgF)"/></svg></div>
+          <span>Serp<span class="dot">Dex</span></span>
+        </div>
+        <p class="fb-desc">Professional SEO tools for everyone — 100% free, no account required. Built for marketers, bloggers and agencies who deserve better.</p>
+        <div class="fb-soc">
+          <a href="#" class="fb-soc-btn"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" class="fb-soc-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" class="fb-soc-btn"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#" class="fb-soc-btn"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+      <div class="fcol">
+        <h5>SEO Tools</h5>
+        <ul>
+          <li><a href="#">Keyword Research</a></li>
+          <li><a href="#">Site Audit Tool</a></li>
+          <li><a href="#">Backlink Checker</a></li>
+          <li><a href="#">Meta Tag Generator</a></li>
+          <li><a href="#">Schema Builder</a></li>
+          <li><a href="#">Page Speed Test</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <h5>Resources</h5>
+        <ul>
+          <li><a href="#">SEO Blog</a></li>
+          <li><a href="#">Free Guides</a></li>
+          <li><a href="#">Video Tutorials</a></li>
+          <li><a href="#">SEO Glossary</a></li>
+          <li><a href="#">Case Studies</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About SerpDex</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Submit a Tool</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fbot">
+      <p>© 2025 <span>SerpDex</span>. All tools free forever. No account. No limits.</p>
+      <div class="fbot-links">
+        <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('stuck',scrollY>40));
+
+// Scroll reveal - immediate for compatibility
+document.querySelectorAll('.up').forEach(el => el.classList.add('in'));
+
+// Sidebar filter
+function sideCat(cat,el){
+  document.querySelectorAll('.scat').forEach(s=>s.classList.remove('on'));
+  el.classList.add('on');
+  let n=0;
+  document.querySelectorAll('#toolGrid .tc').forEach(c=>{
+    const show=cat==='all'||c.dataset.cat===cat;
+    c.style.display=show?'':'none';if(show)n++;
+  });
+  document.getElementById('countNum').textContent=n;
+}
+
+// Live search
+function liveSearch(q){
+  q=q.toLowerCase();
+  let n=0;
+  document.querySelectorAll('#toolGrid .tc').forEach(c=>{
+    const show=!q||c.innerText.toLowerCase().includes(q);
+    c.style.display=show?'':'none';if(show)n++;
+  });
+  document.getElementById('countNum').textContent=n;
+  // reset sidebar active
+  document.querySelectorAll('.scat').forEach(s=>s.classList.remove('on'));
+  document.querySelector('.scat').classList.add('on');
+}
+
+// Hero pills filter
+function heroFilter(cat){
+  document.getElementById('tools').scrollIntoView({behavior:'smooth'});
+  setTimeout(()=>{
+    const el=document.querySelector(`.scat[onclick*="'${cat}'"]`);
+    if(el)el.click();
+  },600);
+}
+
+// Hero search
+function doSearch(){
+  const q=document.getElementById('heroInput').value.trim();
+  document.getElementById('tools').scrollIntoView({behavior:'smooth'});
+  setTimeout(()=>{
+    document.getElementById('sbInput').value=q;
+    liveSearch(q);
+  },600);
+}
+document.getElementById('heroInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+
+// Smooth scroll anchors
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>
