@@ -378,13 +378,7 @@ ul{list-style:none;}
             </div>
           </div>
 
-          <div class="warn-box" style="margin-top:16px;">
-            <i class="fa-brands fa-cloudflare warn-icon" style="color:#F97316;"></i>
-            <div class="warn-text">
-              <strong>Requires Cloudflare Worker setup</strong> — crawling runs server-side via your free Cloudflare Worker. Takes 10 minutes to set up once, then works on every site forever.
-              <br/><a href="crawler-setup-guide.html" target="_blank" style="color:var(--indigo);font-weight:700;display:inline-flex;align-items:center;gap:5px;margin-top:6px;"><i class="fa-solid fa-book-open" style="font-size:11px;"></i> View Setup Guide &rarr;</a>
-            </div>
-          </div>
+          
 
           <button class="btn-crawl" onclick="startCrawl()" id="crawlBtn">
             <i class="fa-solid fa-spider" id="crawlBtnIcon"></i>
@@ -583,7 +577,7 @@ window._sitemapXML = null;
    CRAWLER API — Set your Cloudflare Worker URL here.
    See crawler-setup-guide.html for full setup instructions.
    ══════════════════════════════════════════════════════ */
-const WORKER_URL = 'https://serpdex-crawler.dakshkohli23.workers.dev/';
+const WORKER_URL = 'YOUR_WORKER_URL_HERE/crawl';
 /* Example: 'https://serpdex-crawler.john.workers.dev/crawl' */
 
 /* fetchPage replaced by Worker API */
@@ -668,7 +662,6 @@ async function startCrawl() {
       '&depth=' + depth +
       '&max='   + (maxU >= 999999 ? 99999 : maxU);
 
-    addLog('Calling: ' + apiUrl, 'info');
 
     const res = await fetch(apiUrl, { signal: AbortSignal.timeout(60000) });
     if (!res.ok) throw new Error('Worker returned HTTP ' + res.status);
@@ -677,11 +670,24 @@ async function startCrawl() {
     if (!data.ok) throw new Error(data.error || 'Worker returned error');
 
     const urls = data.urls || [];
-    addLog('Worker crawled ' + data.crawled + ' pages, skipped ' + data.skipped, 'ok');
+    addLog('Crawled ' + data.crawled + ' pages successfully.', 'ok');
+    if (data.skipped > 0) {
+      addLog(data.skipped + ' page(s) skipped:', 'skip');
+      if (data.skippedUrls && Array.isArray(data.skippedUrls)) {
+        data.skippedUrls.forEach(item => {
+          if (typeof item === 'object') {
+            addLog(item.url + ' — ' + item.reason, 'skip');
+          } else {
+            addLog(item, 'skip');
+          }
+        });
+      }
+    }
 
     // Populate table
     urls.forEach((entry, i) => {
-      const pri = i === 0 ? '1.0' : defPri;
+      const isHome = entry.url.replace(/\/$/,'') === startUrl.replace(/\/$/,'');
+      const pri = isHome ? '1.0' : defPri;
       addTableRow(entry.url, 'weekly', pri);
       discoveredUrls.push({ url: entry.url, freq: 'weekly', priority: pri });
     });
