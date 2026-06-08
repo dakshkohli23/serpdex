@@ -646,7 +646,7 @@ async function startCrawl() {
   btn.disabled = true;
   ico.style.display = 'none';
   sp.style.display  = 'inline-block';
-  lbl.textContent   = 'Crawling…';
+  lbl.textContent   = 'Crawling… (may take 15-25s)';
   document.getElementById('progressStatus').textContent = 'Crawling';
   document.getElementById('progressStatus').className  = 'progress-status ps-crawling';
 
@@ -663,7 +663,7 @@ async function startCrawl() {
       '&max='   + (maxU >= 999999 ? 99999 : maxU);
 
 
-    const res = await fetch(apiUrl, { signal: AbortSignal.timeout(60000) });
+    const res = await fetch(apiUrl, { signal: AbortSignal.timeout(120000) });
     if (!res.ok) throw new Error('Worker returned HTTP ' + res.status);
 
     const data = await res.json();
@@ -704,7 +704,8 @@ async function startCrawl() {
     } else {
       document.getElementById('progressStatus').textContent = 'Done ✓';
       document.getElementById('progressStatus').className   = 'progress-status ps-done';
-      addLog('Complete! ' + urls.length + ' URLs ready.', 'ok');
+      const elapsed = data.elapsed ? ' in ' + data.elapsed : '';
+      addLog('Complete! ' + urls.length + ' URLs found' + elapsed + '.', 'ok');
       document.getElementById('resultsCard').classList.add('show');
       document.getElementById('resultsBadge').textContent = urls.length + ' URLs';
       document.getElementById('genRow').style.display = 'flex';
