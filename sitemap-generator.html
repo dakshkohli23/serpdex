@@ -362,9 +362,9 @@ ul{list-style:none;}
                 <option value="50">50 URLs</option>
                 <option value="100">100 URLs</option>
                 <option value="200">200 URLs</option>
-                <option value="500">500 URLs</option>
+                <option value="500" selected>500 URLs</option>
                 <option value="2000">2,000 URLs</option>
-                <option value="999999" selected>Unlimited</option>
+                <option value="999999">Unlimited</option>
               </select>
             </div>
             <div class="form-group" style="margin-bottom:0;">
@@ -577,7 +577,7 @@ window._sitemapXML = null;
    CRAWLER API — Set your Cloudflare Worker URL here.
    See crawler-setup-guide.html for full setup instructions.
    ══════════════════════════════════════════════════════ */
-const WORKER_URL = 'https://serpdex-crawler-api.vercel.app/api/crawl';
+const WORKER_URL = 'YOUR_WORKER_URL_HERE/crawl';
 /* Example: 'https://serpdex-crawler.john.workers.dev/crawl' */
 
 /* fetchPage replaced by Worker API */
@@ -605,24 +605,20 @@ function updateStats(crawled, found, skipped, queue, max) {
   document.getElementById('progressBar').style.width = pct + '%';
 }
 
-/* ── Main crawl function — uses Cloudflare Worker API ── */
+/* ── Main crawl function — Phase 1: discover, Phase 2: fetch batches ── */
 async function startCrawl() {
-  const rawUrl  = document.getElementById('siteUrl').value.trim();
+  const rawUrl = document.getElementById('siteUrl').value.trim();
   if (!rawUrl) { showToast('Please enter a website URL first.', true); return; }
 
-  // Check Worker is configured
   if (WORKER_URL === 'YOUR_WORKER_URL_HERE/crawl') {
-    showToast('Worker not configured! See crawler-setup-guide.html', true);
-    addLog('⚠ Worker URL not set. Open crawler-setup-guide.html to set up your Cloudflare Worker.', 'err');
-    document.getElementById('progressPanel').classList.add('show');
+    showToast('Set your WORKER_URL first!', true);
     document.getElementById('manualCard').style.display = 'block';
     return;
   }
 
   let startUrl;
-  try {
-    startUrl = new URL(rawUrl.startsWith('http') ? rawUrl : 'https://' + rawUrl).href;
-  } catch(e) { showToast('Invalid URL. Include https://', true); return; }
+  try { startUrl = new URL(rawUrl.startsWith('http') ? rawUrl : 'https://' + rawUrl).href; }
+  catch(e) { showToast('Invalid URL. Include https://', true); return; }
 
   const depth  = parseInt(document.getElementById('crawlDepth').value);
   const maxU   = parseInt(document.getElementById('maxUrls').value);
@@ -635,93 +631,138 @@ async function startCrawl() {
   document.getElementById('progressLog').innerHTML   = '';
   document.getElementById('progressPanel').classList.add('show');
   document.getElementById('resultsCard').classList.remove('show');
-  document.getElementById('genRow').style.display   = 'none';
+  document.getElementById('genRow').style.display    = 'none';
   document.getElementById('outputCard').classList.remove('show');
   document.getElementById('manualCard').style.display = 'none';
 
-  const btn  = document.getElementById('crawlBtn');
-  const ico  = document.getElementById('crawlBtnIcon');
-  const sp   = document.getElementById('crawlSpinner');
-  const lbl  = document.getElementById('crawlBtnLabel');
-  btn.disabled = true;
-  ico.style.display = 'none';
-  sp.style.display  = 'inline-block';
-  lbl.textContent   = 'Crawling… (may take 15-25s)';
-  document.getElementById('progressStatus').textContent = 'Crawling';
-  document.getElementById('progressStatus').className  = 'progress-status ps-crawling';
+  const btn = document.getElementById('crawlBtn');
+  const ico = document.getElementById('crawlBtnIcon');
+  const sp  = document.getElementById('crawlSpinner');
+  const lbl = document.getElementById('crawlBtnLabel');
+  btn.disabled = true; ico.style.display = 'none';
+  sp.style.display = 'inline-block'; lbl.textContent = 'Discovering URLs…';
 
-  addLog('Sending crawl request to Worker API…', 'info');
-  addLog('Target: ' + startUrl, 'info');
-  addLog('Depth: ' + depth + '  Max URLs: ' + (maxU >= 999999 ? 'Unlimited' : maxU), 'info');
-  updateStats(0, 0, 0, 0, 100);
+  setStatus('Crawling', 'ps-crawling');
+  addLog('Phase 1 — Discovering all URLs on ' + startUrl, 'info');
 
   try {
-    // Call Cloudflare Worker
-    const apiUrl = WORKER_URL +
-      '?url='   + encodeURIComponent(startUrl) +
-      '&depth=' + depth +
-      '&max='   + (maxU >= 999999 ? 99999 : maxU);
+    // ── PHASE 1: DISCOVER all URLs ──────────────────────────────────────
+    const discoverUrl = WORKER_URL.replace('/crawl', '') +
+      '/crawl?mode=discover' +
+      '&url='   + encodeURIComponent(startUrl) +
+      '&depth=' + depth;
 
+    const discRes  = await fetch(discoverUrl, { signal: AbortSignal.timeout(30000) });
+    if (!discRes.ok) throw new Error('Discovery failed: HTTP ' + discRes.status);
+    const discData = await discRes.json();
+    if (!discData.ok) throw new Error(discData.error || 'Discovery error');
 
-    const res = await fetch(apiUrl, { signal: AbortSignal.timeout(120000) });
-    if (!res.ok) throw new Error('Worker returned HTTP ' + res.status);
+    let allUrls = discData.urls || [];
+    if (maxU < 999999) allUrls = allUrls.slice(0, maxU);
 
-    const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'Worker returned error');
+    addLog('Discovered ' + allUrls.length + ' URLs in ' + (discData.elapsed || '?'), 'ok');
+    updateStats(0, 0, 0, allUrls.length, allUrls.length);
 
-    const urls = data.urls || [];
-    addLog('Crawled ' + data.crawled + ' pages successfully.', 'ok');
-    if (data.skipped > 0) {
-      addLog(data.skipped + ' page(s) skipped:', 'skip');
-      if (data.skippedUrls && Array.isArray(data.skippedUrls)) {
-        data.skippedUrls.forEach(item => {
-          if (typeof item === 'object') {
-            addLog(item.url + ' — ' + item.reason, 'skip');
-          } else {
-            addLog(item, 'skip');
-          }
+    if (allUrls.length === 0) {
+      setStatus('No URLs', 'ps-error');
+      addLog('No URLs found. Try Manual Mode.', 'err');
+      document.getElementById('manualCard').style.display = 'block';
+      showToast('No URLs found — use Manual Mode.', true);
+      return finishCrawl(btn, ico, sp, lbl);
+    }
+
+    // ── PHASE 2: FETCH each URL in batches of 20 ────────────────────────
+    lbl.textContent = 'Fetching pages…';
+    addLog('Phase 2 — Verifying ' + allUrls.length + ' URLs in batches of 20…', 'info');
+
+    const BATCH   = 20;
+    const results = [];
+    const skipped = [];
+    let   done    = 0;
+
+    for (let i = 0; i < allUrls.length; i += BATCH) {
+      const batch    = allUrls.slice(i, i + BATCH);
+      const fetchUrl = WORKER_URL.replace('/crawl', '') + '/crawl?mode=fetch';
+
+      try {
+        const bRes = await fetch(fetchUrl, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ urls: batch }),
+          signal:  AbortSignal.timeout(25000),
         });
+
+        if (!bRes.ok) throw new Error('Batch HTTP ' + bRes.status);
+        const bData = await bRes.json();
+
+        // Add confirmed pages to table
+        (bData.results || []).forEach((entry, idx) => {
+          const isHome = entry.url.replace(/\/$/, '') === startUrl.replace(/\/$/, '');
+          const pri    = isHome ? '1.0' : defPri;
+          addTableRow(entry.url, 'weekly', pri);
+          discoveredUrls.push({ url: entry.url, freq: 'weekly', priority: pri });
+          results.push(entry);
+        });
+
+        // Log skipped with reasons
+        (bData.skipped || []).forEach(s => {
+          skipped.push(s);
+          addLog((s.url || s) + ' — ' + (s.reason || 'skipped'), 'skip');
+        });
+
+        done += batch.length;
+        updateStats(results.length, results.length, skipped.length, allUrls.length - done, allUrls.length);
+        addLog('Batch ' + Math.ceil((i+BATCH)/BATCH) + '/' + Math.ceil(allUrls.length/BATCH) +
+               ' — ' + (bData.results||[]).length + ' pages confirmed, ' +
+               (bData.skipped||[]).length + ' skipped (' + (bData.elapsed||'?') + ')', 'ok');
+
+      } catch(bErr) {
+        addLog('Batch error: ' + bErr.message + ' — retrying URLs individually', 'err');
+        // On batch failure, add the URLs anyway so user doesn't lose them
+        batch.forEach(url => {
+          const isHome = url.replace(/\/$/, '') === startUrl.replace(/\/$/, '');
+          addTableRow(url, 'weekly', isHome ? '1.0' : defPri);
+          discoveredUrls.push({ url, freq: 'weekly', priority: isHome ? '1.0' : defPri });
+        });
+        done += batch.length;
+        updateStats(discoveredUrls.length, discoveredUrls.length, skipped.length, allUrls.length - done, allUrls.length);
       }
     }
 
-    // Populate table
-    urls.forEach((entry, i) => {
-      const isHome = entry.url.replace(/\/$/,'') === startUrl.replace(/\/$/,'');
-      const pri = isHome ? '1.0' : defPri;
-      addTableRow(entry.url, 'weekly', pri);
-      discoveredUrls.push({ url: entry.url, freq: 'weekly', priority: pri });
-    });
-
-    updateStats(data.crawled, urls.length, data.skipped, 0, 100);
+    // ── DONE ────────────────────────────────────────────────────────────
     document.getElementById('progressBar').style.width = '100%';
+    setStatus('Done ✓', 'ps-done');
+    addLog('Complete! ' + discoveredUrls.length + ' pages in sitemap, ' + skipped.length + ' skipped.', 'ok');
 
-    if (urls.length === 0) {
-      document.getElementById('progressStatus').textContent = 'No URLs';
-      document.getElementById('progressStatus').className   = 'progress-status ps-error';
-      addLog('No URLs found. The site may block crawlers — try Manual Mode.', 'err');
-      document.getElementById('manualCard').style.display = 'block';
-      showToast('No URLs found — use Manual Mode.', true);
-    } else {
-      document.getElementById('progressStatus').textContent = 'Done ✓';
-      document.getElementById('progressStatus').className   = 'progress-status ps-done';
-      const elapsed = data.elapsed ? ' in ' + data.elapsed : '';
-      addLog('Complete! ' + urls.length + ' URLs found' + elapsed + '.', 'ok');
+    if (discoveredUrls.length > 0) {
       document.getElementById('resultsCard').classList.add('show');
-      document.getElementById('resultsBadge').textContent = urls.length + ' URLs';
+      document.getElementById('resultsBadge').textContent = discoveredUrls.length + ' URLs';
       document.getElementById('genRow').style.display = 'flex';
-      showToast('Found ' + urls.length + ' URLs!');
+      showToast('Found ' + discoveredUrls.length + ' URLs!');
+    } else {
+      setStatus('No pages', 'ps-error');
+      document.getElementById('manualCard').style.display = 'block';
+      showToast('No pages confirmed — use Manual Mode.', true);
     }
 
   } catch(err) {
     console.error('Crawl error:', err);
-    document.getElementById('progressStatus').textContent = 'Error';
-    document.getElementById('progressStatus').className   = 'progress-status ps-error';
-    addLog('Error: ' + (err.message || 'Unknown error'), 'err');
-    addLog('Make sure your Cloudflare Worker is deployed and the URL is correct.', 'err');
+    setStatus('Error', 'ps-error');
+    addLog('Error: ' + (err.message || 'Unknown'), 'err');
     document.getElementById('manualCard').style.display = 'block';
-    showToast('Crawl failed — check Worker setup.', true);
+    showToast('Crawl failed — check Worker URL.', true);
   }
 
+  finishCrawl(btn, ico, sp, lbl);
+}
+
+function setStatus(text, cls) {
+  const el = document.getElementById('progressStatus');
+  el.textContent = text;
+  el.className   = 'progress-status ' + cls;
+}
+
+function finishCrawl(btn, ico, sp, lbl) {
   crawling = false;
   btn.disabled = false;
   ico.style.display = '';
